@@ -117,8 +117,8 @@ class AddTask extends Component {
                         </div>  
                         {!isAdd ? (
                             <div>
-                                <button type="submit" className="btn btn-info" onClick={this._handleUpdate}><i className="far fa-save"></i> Save</button>
-                                <button type="submit" className="btn btn-primary" onClick={this._handleCancel}><i className="fas fa-ban"></i> Cancel</button>
+                                <button type="submit" className="btn btn-primary mr-2" onClick={this._handleUpdate}><i className="far fa-save"></i> Save</button>
+                                <button type="submit" className="btn btn-secondary" onClick={this._handleCancel}><i className="fas fa-ban"></i> Cancel</button>
                             </div>
                         ) : (
                          <button type="submit" className="btn btn-info" onClick={this._handleAddTask}><i className="fas fa-plus-circle"></i> Add</button>
