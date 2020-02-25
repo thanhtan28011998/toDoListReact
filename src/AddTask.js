@@ -30,20 +30,20 @@ class AddTask extends Component {
         
     }
     _isChangedName = (e) => {
-        console.log( {...this.state.toDoItem, name: e.target.value})
+        //console.log( {...this.state.toDoItem, name: e.target.value})
         this.setState({
             toDoItem: {...this.state.toDoItem, name: e.target.value}
         })
     }
     _isChangeLevel = (e) => {
-        console.log( {...this.state.toDoItem, level: e.target.value})
+        //console.log( {...this.state.toDoItem, level: e.target.value})
 
         this.setState({
             toDoItem: {...this.state.toDoItem, level: e.target.value}
         })
     }
     _isChangeDate = (e) => {
-        console.log( {...this.state.toDoItem, date: e.target.value})
+        //console.log( {...this.state.toDoItem, date: e.target.value})
 
         this.setState({
             toDoItem: {...this.state.toDoItem, date: e.target.value}
@@ -116,12 +116,12 @@ class AddTask extends Component {
                             </div>
                         </div>  
                         {!isAdd ? (
-                            <>
-                             <button type="submit" style={{ marginRight: 5 + 'px' }} className="btn btn-info" onClick={this._handleUpdate}><i className="far fa-save"></i> Save</button>
-                             <button type="submit" style={{ marginRight: 5 + 'px' }} className="btn btn-primary" onClick={this._handleCancel}><i className="fas fa-ban"></i> Cancel</button>
-                            </>
+                            <div>
+                                <button type="submit" className="btn btn-info" onClick={this._handleUpdate}><i className="far fa-save"></i> Save</button>
+                                <button type="submit" className="btn btn-primary" onClick={this._handleCancel}><i className="fas fa-ban"></i> Cancel</button>
+                            </div>
                         ) : (
-                         <button type="submit" style={{ marginRight: 5 + 'px' }} className="btn btn-info" onClick={this._handleAddTask}><i className="fas fa-plus-circle"></i> Add</button>
+                         <button type="submit" className="btn btn-info" onClick={this._handleAddTask}><i className="fas fa-plus-circle"></i> Add</button>
 
                         )}
                     </div>
