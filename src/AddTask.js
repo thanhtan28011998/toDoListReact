@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import TaskList from './TaskList';
+import {Navbar, NavbarBrand, NavbarToggler, Collapse, Nav, NavItem, NavLink, Container, Row, Col, Label, Input, FormGroup, Form, Button } from 'reactstrap';
 
 class AddTask extends Component {
    state = {
@@ -15,17 +16,22 @@ class AddTask extends Component {
             indexUpdate: 0
         };
     
-    _handleAddTask = () => {
-        const {name, date} = this.state.toDoItem;
-        if(name === '' || date === ''){
-            if(name === '')
+    _handleAddTask = (event) => {
+        event.preventDefault();
+        //const {name, date} = this.state.toDoItem;
+        const {toDoItem} = this.state;
+        const {taskName, taskLevel, taskDate} = toDoItem;
+
+        if(taskName === '' || taskLevel === '' || taskDate === ''){
+            if(taskName === '')
                 alert("Please enter the name");
             else
                 alert("Deadline is invalid");
         }else{
             this.setState({
-                toDoList: this.state.toDoList.concat(this.state.toDoItem)
+                toDoList: this.state.toDoList.concat(toDoItem),
             });
+            localStorage.setItem('list', JSON.stringify(toDoItem));
         }
         
     }
@@ -37,19 +43,17 @@ class AddTask extends Component {
     }
     _isChangeLevel = (e) => {
         //console.log( {...this.state.toDoItem, level: e.target.value})
-
         this.setState({
             toDoItem: {...this.state.toDoItem, level: e.target.value}
         })
     }
     _isChangeDate = (e) => {
         //console.log( {...this.state.toDoItem, date: e.target.value})
-
         this.setState({
             toDoItem: {...this.state.toDoItem, date: e.target.value}
         })
     }
-    _handleEdit = (index) =>{
+    _handleEdit = (index) => {
         this.setState({
             toDoItem: this.state.toDoList.find((item, i) => {
                 return i === index;
@@ -83,53 +87,73 @@ class AddTask extends Component {
     }
 
     render() {
-            const {toDoItem, isAdd, toDoList} = this.state;
-            const {name, level, date} = toDoItem;
-            return (
-                <div>
-                    <div className="container mb-4">
-                        <h2 className="text-center font-weight-bold text-info mt-4">TO DO LIST</h2>
-                        <div className="row">
-                            <div className="col-4">
-                                <div className="form-group">
-                                    <label>Name</label>
-                                    <input type="text" value={name} className="form-control" placeholder="Enter name of task" onChange={this._isChangedName} />
-                                </div>
-                            </div>
-                            <div className="col-4">
-                                <div className="form-group">
-                                    <label>Level</label>
-                                    <select className="form-control" value={level} onChange={this._isChangeLevel}>
+
+        const {toDoItem, isAdd, toDoList} = this.state;
+        const {name, level, date} = toDoItem;
+        return (
+            <div>
+                <Navbar color="info" light expand="lg">
+                    <NavbarBrand href="/app">React</NavbarBrand>
+                    <NavbarToggler />
+                    <Collapse navbar>
+                        <Nav className="mr-auto" navbar>
+                        <NavItem>
+                            <NavLink href="/app">Home</NavLink>
+                        </NavItem>
+                        <NavItem>
+                            <NavLink href="/toDoListReact">Product</NavLink>
+                        </NavItem>
+                        <NavItem>
+                            <NavLink href="/">Logout</NavLink>
+                        </NavItem>
+                        </Nav>
+                    </Collapse>
+                </Navbar>
+                <Container className="mt-5">
+                    <h2 className="text-center font-weight-bold text-info mt-4">TO DO LIST</h2>
+                    <Form>
+                        <Row sm="9" md="7">
+                            <Col sm="4">
+                                <FormGroup>
+                                    <Label for="name">Name</Label>
+                                    <Input type="text" value={name} className="form-control" id="name" bsSize="lg" onChange={this._isChangedName} placeholder="Enter name of task" />
+                                </FormGroup>     
+                            </Col>
+                            <Col sm="4">
+                                <FormGroup>
+                                    <Label for="level">Level</Label>
+                                    <Input type="select" value={level} id="level" bsSize="lg" onChange={this._isChangeLevel}>
                                         <option value="1">1</option>
                                         <option value="2">2</option>
                                         <option value="3">3</option>
                                         <option value="4">4</option>
                                         <option value="5">5</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div className="col-4">
-                                <div className="form-group">
-                                    <label>Deadline</label>
-                                    <input type="date" className="form-control" value={date} onChange={this._isChangeDate} />
-                                </div>
-                            </div>
-                        </div>  
+                                    </Input>
+                                </FormGroup>     
+                            </Col>
+                            <Col sm="4">
+                                <FormGroup>
+                                    <Label for="date">Deadline</Label>
+                                    <Input type="date" value={date} id="date" bsSize="lg" onChange={this._isChangeDate} />
+                                </FormGroup>     
+                            </Col>
+                        </Row>
                         {!isAdd ? (
-                            <div>
-                                <button type="submit" className="btn btn-primary mr-2" onClick={this._handleUpdate}><i className="far fa-save"></i> Save</button>
-                                <button type="submit" className="btn btn-secondary" onClick={this._handleCancel}><i className="fas fa-ban"></i> Cancel</button>
-                            </div>
+                        <Row className="mb-5">
+                            <Button type="submit" color="primary" className="mr-3" onClick={this._handleUpdate}><i className="far fa-save"></i> SAVE</Button>
+                            <Button type="submit" color="secondary" onClick={this._handleCancel}><i className="far fa-times-circle"></i> CANCEL</Button>
+                        </Row>   
                         ) : (
-                         <button type="submit" className="btn btn-info" onClick={this._handleAddTask}><i className="fas fa-plus-circle"></i> Add</button>
-
+                            <Button type="submit" className="mb-5" color="info" onClick={this._handleAddTask}><i className="fas fa-plus-circle"></i> ADD</Button>
                         )}
-                    </div>
-                    <TaskList onEdit={this._handleEdit} onDelete={this._handleDelete} list={toDoList} />
+                    </Form>    
+                </Container>
+                       
+                <TaskList onEdit={this._handleEdit} onDelete={this._handleDelete} list={toDoList} />
 
-                </div>
-            );
-        }
+            </div>
+        );
+    }
 }
 
 export default AddTask;
